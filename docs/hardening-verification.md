@@ -19,6 +19,12 @@ Python 3.14 and Django 6.0.8. System checks and migration drift checks passed.
 GitHub Actions is configured for Windows and Linux; a configured workflow is not
 evidence of a completed hosted CI run.
 
+The optional LAN listener passed 80 application tests on Windows. Its isolated
+two-process test covered shared database writes, separate HTTP/HTTPS cookies,
+CSRF and Host checks, static files, rejection of forged comment attribution,
+LAN worker recovery while HTTPS remains available, and complete shutdown.
+These checks use synthetic data and do not establish work-laptop connectivity.
+
 ## Browser checks
 
 The project table/modal release was exercised at 1280px and 390px using synthetic
@@ -50,5 +56,6 @@ backup fingerprints in ignored local evidence or protected runtime storage.
 Public documentation must not contain household records or invite links.
 A source-code check cannot certify those operational properties.
 
-The GitHub preparation changes have not been deployed as a new household release.
-They do not modify the running installation, its protected owners, or live data.
+The source checkout and installed service are separate. Confirm the installed
+release and scoped firewall against private deployment receipts after each rollout.
+Verify access from the intended household devices separately from server-side checks.
