@@ -18,7 +18,8 @@ class CommentIdentity:
 
 def comment_identity(request):
     path = settings.DEN_DEVICE_MAP_FILE
-    if not path or not request.is_secure() or request.META.get('HTTP_TAILSCALE_FUNNEL_REQUEST'):
+    if (settings.DEN_ENV == 'lan' or not path or not request.is_secure()
+            or request.META.get('HTTP_TAILSCALE_FUNNEL_REQUEST')):
         return None
     try:
         address = str(ipaddress.ip_address(request.META.get('REMOTE_ADDR', '')))

@@ -6,12 +6,14 @@ import secrets
 from urllib.parse import urlsplit
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 from django.core.exceptions import ImproperlyConfigured
+from .lan import lan_configuration
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 DEN_ENV = os.environ.get('DEN_ENV', 'development')
-if DEN_ENV not in ('development', 'staging', 'production'):
+if DEN_ENV not in ('development', 'staging', 'production', 'lan'):
     raise ImproperlyConfigured('Invalid DEN_ENV.')
 PRODUCTION = DEN_ENV == 'production'
+LAN = DEN_ENV == 'lan'
 DEBUG = False
 credentials = {}
 if os.environ.get('DEN_SECRET_FILE'):
@@ -44,6 +46,17 @@ if PRODUCTION:
         raise ImproperlyConfigured('DEN_PUBLIC_ORIGIN must be an exact HTTPS origin without a trailing slash.') from None
     ALLOWED_HOSTS = [origin.hostname]
     CSRF_TRUSTED_ORIGINS = [DEN_PUBLIC_ORIGIN]
+DEN_LAN_ORIGIN = os.environ.get('DEN_LAN_ORIGIN', '')
+DEN_LAN_SUBNET = os.environ.get('DEN_LAN_SUBNET', '')
+DEN_LAN_HOST, DEN_LAN_PORT, DEN_LAN_NETWORK = None, None, None
+if LAN or DEN_LAN_ORIGIN or DEN_LAN_SUBNET:
+    try:
+        DEN_LAN_HOST, DEN_LAN_PORT, DEN_LAN_NETWORK = lan_configuration(DEN_LAN_ORIGIN, DEN_LAN_SUBNET)
+    except ValueError as exc:
+        raise ImproperlyConfigured(str(exc)) from None
+if LAN:
+    ALLOWED_HOSTS = [DEN_LAN_HOST]
+    CSRF_TRUSTED_ORIGINS = []
 OPENROUTER_API_KEY = credentials.get('openrouter_api_key', '')
 if DEN_ENV == 'development':
     OPENROUTER_API_KEY = os.environ.get('OPENROUTER_API_KEY', OPENROUTER_API_KEY)
@@ -72,6 +85,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'myapp.security.WriteBudgetMiddleware',
 ]
+if LAN:
+    MIDDLEWARE.insert(0, 'myapp.security.LanBoundaryMiddleware')
 ROOT_URLCONF = 'infonet.urls'
 TEMPLATES = [{'BACKEND': 'django.template.backends.django.DjangoTemplates',
     'DIRS': [BASE_DIR / 'myapp' / 'templates'], 'APP_DIRS': True,

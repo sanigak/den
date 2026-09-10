@@ -4,7 +4,8 @@ Doc ID: `security`
 
 ## Boundary
 
-Tailscale is the access gate; Den intentionally has no household login. An
+Tailscale is the default access gate; optional LAN access admits the configured
+trusted home subnet. Den intentionally has no household login. An
 authorized network intruder can read, edit, export, and delete household records.
 Application hardening mitigates injection and resource abuse. A restricted
 Windows service identity separates Den from the owner's private profile.
@@ -43,6 +44,24 @@ Do not expose the origin listener or replace exact hosts with a wildcard.
 HSTS covers this host for one year. Preload and subdomain coverage are deliberately
 disabled, as requested. Only the corresponding Django checks W005 and W021 are
 silenced; all other deployment warnings remain fatal during release verification.
+
+## Home network access
+
+LAN access is an explicit exception to the default Tailscale-only boundary.
+A separate process binds one configured RFC 1918 IPv4 address and port, with a
+Windows firewall allow rule scoped to the home interface and subnet. Application
+middleware independently checks the actual socket peer and exact Host including
+port before static files, CSRF, views, or database writes. Forwarded addresses
+cannot bypass that check; Tailscale and forwarding headers are discarded.
+The LAN process never trusts a proxy or assigns a comment identity.
+
+This listener uses unencrypted HTTP and non-Secure SameSite=Strict cookies.
+CSRF tokens and same-origin checks still apply to every POST. It does not trust
+the HTTPS origin for LAN POSTs. The existing Tailscale process retains HTTPS,
+Secure cookies, HSTS, and device-based comment attribution. Both processes share
+database-backed resource limits; accessing two addresses grants no second quota.
+Do not forward the LAN port to the internet or enable it on an untrusted subnet.
+Configuration, lifecycle, rollback, and verification are in `deployment.md`.
 
 ## Requests and limits
 

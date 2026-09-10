@@ -8,6 +8,9 @@ Use the documented loopback/Tailscale setup for a household deployment. Do not
 publish the origin port, enable Funnel for household data, or use the development
 server as a public production service. Public demonstrations need their own
 disposable data and a separately reviewed access and abuse-control design.
+The optional LAN listener is a deliberate HTTP exception for a trusted home
+subnet, with its own scoped firewall and peer/host checks. It grants editing
+access to admitted LAN devices and never supplies a named comment identity.
 
 ## Report a vulnerability
 

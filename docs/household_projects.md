@@ -119,6 +119,9 @@ addresses every minute; no Tailscale control or credential access is granted
 to Den. New approved household devices appear without an app login or restart.
 There can be up to one refresh interval before enrollment/removal is reflected.
 Tailscale access policy and device approval still gate incoming requests.
+The optional LAN worker admits its configured home subnet for ordinary household
+features, but always returns no comment identity, even for supplied HTTPS or
+Tailscale headers. Existing comments remain readable through either address.
 
 The label describes the device's enrolled owner, not whoever physically holds
 it. Historical authors remain unchanged after device removal, display-name changes, or reassignment.

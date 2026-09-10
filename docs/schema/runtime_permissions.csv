@@ -15,3 +15,5 @@ Tailscale protected credentials,SYSTEM and administrative permissions,no access,
 identity directory and device map,full control,read only,Denied write and delete; permitted map read
 identity owner mapping,full control,read only,Denied owner mapping writes
 DenHub Device Map task,SYSTEM execution,no control granted,Fixed protected script; reads status and writes bounded map
+LAN worker,configured through protected service XML,same DenHub service identity,Separate Django process; shared live database; no additional filesystem grants
+DenHub-LAN firewall rule,administrative changes only,no control granted,Exact local address and TCP port and interface and remote home subnet

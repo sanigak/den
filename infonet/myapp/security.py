@@ -1,11 +1,13 @@
 """DOC: security#requests-and-limits"""
 from datetime import date, timedelta
+from ipaddress import ip_address
 import logging
 import math
 import time
 import uuid
 
 from django.core.exceptions import RequestDataTooBig, TooManyFieldsSent, TooManyFilesSent
+from django.conf import settings
 from django.db import OperationalError, transaction
 from django.http import HttpResponse, HttpResponseNotAllowed
 from django.utils.deprecation import MiddlewareMixin
@@ -137,6 +139,27 @@ def acquire_ai(now=None):
 
 def release_ai(token):
     SecurityState.objects.filter(pk=1, ai_owner=token).update(ai_owner='', ai_until=0)
+
+
+# DOC: security#home-network-access
+class LanBoundaryMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        try:
+            peer = ip_address(request.META.get('REMOTE_ADDR', ''))
+            allowed = peer in settings.DEN_LAN_NETWORK
+        except (ValueError, TypeError):
+            allowed = False
+        if (not allowed or request.META.get('HTTP_HOST') != f'{settings.DEN_LAN_HOST}:{settings.DEN_LAN_PORT}'):
+            response = error_response(403)
+            response['Cache-Control'] = 'no-store'
+            return response
+        for key in list(request.META):
+            if key.startswith(('HTTP_TAILSCALE_', 'HTTP_X_FORWARDED_')) or key == 'HTTP_FORWARDED':
+                request.META.pop(key)
+        return self.get_response(request)
 
 
 class EnvelopeMiddleware:

@@ -10,7 +10,9 @@ and projects. Built with Django, SQLite, and plain HTML, CSS, and JavaScript.
 
 **Den is designed for one trusted household. It has no application login.**
 Everyone admitted through the network boundary can read and change shared data.
-Keep the household instance private. Use a separate, disposable database for demos.
+Keep the household instance private. Optional [home-network access](docs/deployment.md#home-network-access)
+lets trusted LAN devices use the same data without Tailscale. Use a separate,
+disposable database for demos.
 
 ## Run locally
 

@@ -55,9 +55,11 @@ See `schema/security_config.csv` for the full contract.
 
 | Variable | Purpose |
 | --- | --- |
-| `DEN_ENV` | development, staging, or production |
+| `DEN_ENV` | development, staging, production, or the supervised lan worker |
 | `DEN_DATA_DIR` | Directory containing the SQLite database |
 | `DEN_PUBLIC_ORIGIN` | Exact production HTTPS origin; also an optional launcher bookmark |
+| `DEN_LAN_ORIGIN` | Optional exact private IPv4 HTTP origin for the additional LAN worker |
+| `DEN_LAN_SUBNET` | Canonical RFC 1918 IPv4 subnet allowed to reach the LAN worker |
 | `DEN_SECRET_FILE` | Private JSON containing `django_secret` and optional `openrouter_api_key` |
 | `DEN_OWNERS_FILE` | Private owner mapping used only on initial Windows installation |
 | `DEN_PYTHON` | Absolute system-wide Python executable for Windows installation |
@@ -72,9 +74,34 @@ preserve the installed origin, AI flag, existing owners, secrets, and data.
 An explicit `DEN_DISPLAY_TIME_ZONE` changes the service's display zone during
 upgrade; otherwise its saved zone is retained, with the historical default used
 for older installations. UTC storage never changes.
+The optional LAN origin and subnet are also preserved on upgrades. Configure them
+through `deploy/lan.ps1`; the installer does not import an interactive LAN override.
 
 The standard Windows runtime path is fixed deliberately so service ACLs, backup
 tasks, and recovery tools share one boundary. It is not a household identifier.
+
+## Home network access
+
+LAN access is optional and disabled by default. `deploy/lan.ps1 Enable` records an
+explicit HTTP origin such as `http://192.168.50.10:8080` and the selected adapter's
+subnet in protected service configuration. Use your own assigned home address.
+The origin must contain an RFC 1918 IPv4 address and port 1024–65535 except 8082;
+credentials, paths, queries, fragments, hostnames, wildcard binds, network/broadcast
+addresses, and noncanonical subnets are rejected. The address must belong to the
+configured private subnet. Both values are required together.
+
+The service starts a separate process with `DEN_ENV=lan`, sharing the installed
+release, secret file, database, write budgets, and AI lease. It uses HTTP cookies
+without the Secure flag and never enables HSTS or HTTPS redirects. The production
+worker keeps its HTTPS-only settings and separate cookies at the Tailscale host.
+LAN is a deployed mode: external strong secrets and an absolute data directory
+remain mandatory; development seeding and environment API-key overrides are refused.
+
+LAN clients can use household features and read comments. They cannot post named
+comments because there is no verified Tailscale identity. Forwarded identity
+headers are discarded, and comments fail closed even if a client supplies them.
+HTTP traffic is unencrypted. Enable this only for a trusted home network; Den has
+no login and all admitted devices can edit shared records.
 
 ## Secrets and optional AI
 

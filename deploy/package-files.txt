@@ -3,6 +3,7 @@ serve.py
 requirements.txt
 infonet/__init__.py
 infonet/settings.py
+infonet/lan.py
 infonet/urls.py
 infonet/wsgi.py
 infonet/asgi.py

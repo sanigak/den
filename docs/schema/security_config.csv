@@ -1,5 +1,7 @@
 option,default,production_requirement,description
-DEN_ENV,development,production,development or staging or production
+DEN_ENV,development,production,development or staging or production; supervised worker uses lan
+DEN_LAN_ORIGIN,empty,optional,Exact private IPv4 HTTP origin with explicit port; separate LAN worker only
+DEN_LAN_SUBNET,empty,required with LAN origin,Canonical RFC 1918 IPv4 subnet containing LAN host; actual socket peers checked
 DEN_SECRET_FILE,absent,required,Absolute UTF-8 JSON secret file; required in staging too
 django_secret,random in development,50+ characters and 5+ unique characters,Secret file property; no django-insecure prefix
 openrouter_api_key,empty,optional,OpenRouter provider key in protected secret file

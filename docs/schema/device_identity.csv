@@ -7,3 +7,4 @@ devices.json,devices.id,string,Unique; 1 to 64 ASCII letters digits underscore o
 devices.json,devices.addresses,array,1 or 2 unique canonical Tailscale IP addresses,IPv4 and IPv6 source lookup
 devices.json,devices.login,string,Known lowercase owner login; must match Serve header,Owner identity cross-check
 devices.json,devices.author,string,1 to 64 printable trimmed characters,Display name stamped onto comments
+request,DEN_ENV=lan,mode,Always no comment identity,Home-network worker cannot attribute or post comments even with forged headers

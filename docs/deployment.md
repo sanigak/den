@@ -30,7 +30,7 @@ database on a fresh install, pass `-ImportDatabase <absolute-path>`. The SQLite
 backup API copies it and verifies table fingerprints before migration. Import is
 rejected during upgrades or when an installed database already exists.
 
-`deploy/package.py` copies the exact 71-file application allowlist in
+`deploy/package.py` copies the exact 72-file application allowlist in
 `deploy/package-files.txt`, recording SHA-256 hashes. Tests, source archives,
 configuration examples, credentials, and databases are excluded. New production
 files must be added explicitly. The WinSW binary is checked against
@@ -97,6 +97,57 @@ Verify each intended device independently, including cellular access where
 appropriate. Verify denial for disconnected/unapproved devices and the origin
 port. Record actual results privately; one successful device is not proof for
 all household devices.
+
+## Home network access
+
+An optional second Waitress process serves the same live database to a trusted
+home subnet. Upgrade first, then run these commands in elevated PowerShell with
+your server's assigned private IPv4 address:
+
+```powershell
+./deploy/den.ps1 Upgrade
+./deploy/lan.ps1 Enable -Address 192.168.50.10 -Port 8080
+./deploy/lan.ps1 Status
+```
+
+The example address is synthetic. The script derives the subnet from the selected
+adapter, validates the configuration, and creates `DenHub-LAN`, an inbound TCP
+allow rule restricted to that interface, local address, port, and remote subnet.
+The rule applies across firewall profiles without changing the adapter's category
+and blocks edge traversal. For port 8080 it disables only Den's retired legacy
+block rule, because an explicit block would override the scoped allow rule.
+No router forwarding or Tailscale policy is configured by this command.
+
+Enabling restarts Den and checks both HTTP listeners. If enabling fails, the
+script restores the previous service XML and legacy rule state, removes its new
+allow rule, and restarts the original configuration. Existing configured networks
+must be disabled before changing their address. Keep the host's DHCP reservation
+stable and reconfigure LAN access if its assigned address or subnet changes.
+
+The LAN worker runs under the existing restricted service account. Python's
+`spawn` process mode gives it separate Django settings; it shares the same release,
+database, quotas, AI lease, backup schedule, and upgrade/restore lifecycle.
+A supervisor retries LAN worker failures after ten seconds while the Tailscale
+worker remains available. Stopping Den stops both listeners. Log files are
+separate and bounded: `requests.log` and `requests-lan.log`.
+
+Verify the page and a form submission from an actual second home device without
+Tailscale. A request from the server alone does not verify inbound firewall
+traversal, Wi-Fi isolation, or a managed laptop's network policy. Confirm denied
+requests from outside the configured subnet and reject spoofed identity headers
+with isolated tests. Preserve live evidence privately.
+
+To return to Tailscale-only access:
+
+```powershell
+./deploy/lan.ps1 Disable
+```
+
+This clears the optional listener configuration, removes its allow rule, restores
+the legacy block if present, and restarts Den. It changes no household records.
+
+References: [Python process isolation](https://docs.python.org/3/library/multiprocessing.html),
+[Windows firewall rule precedence](https://learn.microsoft.com/en-us/windows/security/operating-system-security/network-security/windows-firewall/rules).
 
 ## Secrets
 

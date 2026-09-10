@@ -115,6 +115,7 @@ if ($Action -in @('Install','Upgrade')) {
         Run-Native $Python @('-I','-B',"$PSScriptRoot\sync_devices.py",'--validate-owners',$OwnersFile)
     }
     $mode='staging'; $productionOrigin=''; $aiEnabled='0'
+    $lanOrigin=''; $lanSubnet=''
     $displayTimeZone=$env:DEN_DISPLAY_TIME_ZONE
     if (-not $displayTimeZone) { $displayTimeZone='America/New_York' }
     if ($oldState) {
@@ -122,6 +123,8 @@ if ($Action -in @('Install','Upgrade')) {
         [xml]$oldXml=Get-Content -LiteralPath $serviceXml -Raw
         $aiEnabled=($oldXml.service.env | Where-Object name -eq 'DEN_AI_ENABLED').value
         $savedTimeZone=($oldXml.service.env | Where-Object name -eq 'DEN_DISPLAY_TIME_ZONE').value
+        $lanOrigin=($oldXml.service.env | Where-Object name -eq 'DEN_LAN_ORIGIN').value
+        $lanSubnet=($oldXml.service.env | Where-Object name -eq 'DEN_LAN_SUBNET').value
         if (-not $env:DEN_DISPLAY_TIME_ZONE -and $savedTimeZone) { $displayTimeZone=$savedTimeZone }
     }
     New-Item -ItemType Directory -Path $runtimeRoot -Force | Out-Null
@@ -137,6 +140,13 @@ if ($Action -in @('Install','Upgrade')) {
     if (-not (Test-Path -LiteralPath $wheelDir)) { throw 'Download the hash-locked wheels before installing.' }
     Run-Native $servicePython @('-m','pip','install','--no-index','--require-hashes','--find-links',$wheelDir,'-r',"$release\requirements.txt")
     Run-Native $servicePython @('-I','-c','from zoneinfo import ZoneInfo; import sys; ZoneInfo(sys.argv[1])',$displayTimeZone)
+    $env:DEN_ENV=$mode; $env:DEN_PUBLIC_ORIGIN=$productionOrigin
+    $env:DEN_LAN_ORIGIN=$lanOrigin; $env:DEN_LAN_SUBNET=$lanSubnet
+    if ($lanOrigin -or $lanSubnet) {
+        Push-Location $release
+        try { Run-Native $servicePython @('-B','-c','from infonet.lan import lan_configuration; import sys; lan_configuration(*sys.argv[1:])',$lanOrigin,$lanSubnet) }
+        finally { Pop-Location }
+    }
     $manifest=Get-Content "$PSScriptRoot\vendor-manifest.json" -Raw | ConvertFrom-Json
     $entry=$manifest | Where-Object { $_.file -eq 'deploy/vendor/DenHub.exe' }
     $actual=(Get-FileHash "$PSScriptRoot\vendor\DenHub.exe" -Algorithm SHA256).Hash.ToLowerInvariant()
@@ -190,6 +200,7 @@ if ($Action -in @('Install','Upgrade')) {
   <env name="DEN_LOG_DIR" value="$runtimeRoot\logs"/><env name="DEN_RUNTIME_ROOT" value="$runtimeRoot"/>
   <env name="DEN_DEVICE_MAP_FILE" value="$runtimeRoot\identity\devices.json"/>
   <env name="DEN_DISPLAY_TIME_ZONE" value="$displayTimeZoneXml"/>
+  <env name="DEN_LAN_ORIGIN" value="$lanOrigin"/><env name="DEN_LAN_SUBNET" value="$lanSubnet"/>
   <env name="TEMP" value="$runtimeRoot\tmp"/><env name="TMP" value="$runtimeRoot\tmp"/>
   <env name="PYTHONUTF8" value="1"/><env name="PYTHONDONTWRITEBYTECODE" value="1"/>
 </service>
@@ -270,6 +281,7 @@ if ($Action -eq 'Backup') {
     Unregister-ScheduledTask -TaskName 'DenHub Daily Backup' -Confirm:$false -ErrorAction SilentlyContinue
     Unregister-ScheduledTask -TaskName 'DenHub Device Map' -Confirm:$false -ErrorAction SilentlyContinue
     Get-NetFirewallRule -Name 'DenHub-Legacy8080' -ErrorAction SilentlyContinue | Remove-NetFirewallRule
+    Get-NetFirewallRule -Name 'DenHub-LAN' -ErrorAction SilentlyContinue | Remove-NetFirewallRule
     Write-Output 'Service and scheduled task removed. Data and backups retained.'
 } elseif ($Action -eq 'Verify') {
     $service=Get-CimInstance Win32_Service -Filter "Name='DenHub'"
