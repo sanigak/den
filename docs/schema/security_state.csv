@@ -1,0 +1,9 @@
+model,field,type,default,meaning
+SecurityState,id,PositiveSmallIntegerField,1,Fixed singleton seeded by migration 0008
+SecurityState,minute,BigIntegerField,0,Unix timestamp divided by 60
+SecurityState,writes,PositiveIntegerField,0,POST attempts in the current minute
+SecurityState,heavy,PositiveIntegerField,0,Generation and shift attempts in the current minute
+SecurityState,ai_day,BigIntegerField,0,Unix timestamp divided by 86400
+SecurityState,ai_attempts,PositiveIntegerField,0,Started AI attempts in the current UTC day
+SecurityState,ai_owner,CharField,empty,32-character lease token
+SecurityState,ai_until,FloatField,0,Unix time after which a crashed lease can be replaced

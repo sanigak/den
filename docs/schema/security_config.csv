@@ -1,0 +1,16 @@
+option,default,production_requirement,description
+DEN_ENV,development,production,development or staging or production
+DEN_SECRET_FILE,absent,required,Absolute UTF-8 JSON secret file; required in staging too
+django_secret,random in development,50+ characters and 5+ unique characters,Secret file property; no django-insecure prefix
+openrouter_api_key,empty,optional,OpenRouter provider key in protected secret file
+OPENROUTER_API_KEY,empty,ignored by deployed settings,Development process environment override; installer can import into protected storage
+DEN_PUBLIC_ORIGIN,empty,required,Exact HTTPS origin without path or trailing slash; standard port
+DEN_DATA_DIR,Django project directory,required absolute protected runtime directory,Contains SQLite db.sqlite3; absolute path required in staging too
+DEN_AI_ENABLED,0,explicit 1 plus OpenRouter key,Enables bounded Smart Export calls
+DEN_LOG_DIR,unset,protected runtime logs directory,Sanitized rotating request logs
+DEN_RUNTIME_ROOT,unset,installer-managed,Root used by the fixed identity probe
+DEN_TEST_DB,unset,ignored in production,File-backed isolated test database in development
+DEN_DEVICE_MAP_FILE,unset,installer-managed absolute protected file,Fresh Tailscale node registry required for comments; absent or stale disables posting
+DEN_DISPLAY_TIME_ZONE,America/New_York,valid IANA timezone,Comment display only; UTC storage unchanged
+DEN_OWNERS_FILE,unset,installer input only,Private owner mapping to copy on fresh install; existing protected map preserved
+DEN_PYTHON,installed base interpreter on upgrade,absolute system-wide executable on fresh install,Windows deployment Python selection

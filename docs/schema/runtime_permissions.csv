@@ -1,0 +1,17 @@
+resource,administrators_and_SYSTEM,DenHub_service,verification
+C:\ProgramData\DenHub,full control,traverse with SeChangeNotifyPrivilege,Service startup
+releases and release venv,full control,read and execute,Denied code and dependency writes
+tools,full control,read and execute,Protected inherited ACL
+DenHub.exe and DenHub.xml,full control,read and execute wrapper; read configuration,Denied configuration writes
+secrets.json,full control,read,Denied writes and delete access
+data,full control,modify,Actual SQLite create and insert and drop probe
+tmp,full control,modify,Actual temporary file creation and deletion
+logs,full control,modify,Bounded rotating request and wrapper logs
+backups,full control,no access,Denied read and write and delete access
+restore-candidate,full control,no access,Protected candidate before restore activation
+C:\Python314,existing administrative permissions,read and execute,Denied base executable and library writes
+Owner private profile and AppData,owner and administrative permissions,no access,Actual service file-handle probes denied
+Tailscale protected credentials,SYSTEM and administrative permissions,no access,Actual service file-handle probe denied
+identity directory and device map,full control,read only,Denied write and delete; permitted map read
+identity owner mapping,full control,read only,Denied owner mapping writes
+DenHub Device Map task,SYSTEM execution,no control granted,Fixed protected script; reads status and writes bounded map

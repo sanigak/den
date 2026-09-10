@@ -1,0 +1,42 @@
+[
+  {
+    "file": "infonet/myapp/static/vendor/bootstrap.min.css",
+    "url": "https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css",
+    "sha256": "f886516f3d41e9e7bd994c7f7a39a89cafae9483f90396cb0ddeafe8d1ea5e72"
+  },
+  {
+    "file": "infonet/myapp/static/vendor/bootstrap-LICENSE.txt",
+    "url": "https://raw.githubusercontent.com/twbs/bootstrap/v4.6.2/LICENSE",
+    "sha256": "53d2513c8df48a817d70537cc906b8e9c7bf2513328ff66847894773e615b37e"
+  },
+  {
+    "file": "infonet/myapp/static/vendor/nunito-0.ttf",
+    "url": "https://fonts.gstatic.com/s/nunito/v32/XRXI3I6Li01BKofiOc5wtlZ2di8HDLshRTM.ttf",
+    "sha256": "9ecbdba35fa74f10a1a916c31649b802a12deb9e66c7b1fe4650afcfd4d16971"
+  },
+  {
+    "file": "infonet/myapp/static/vendor/nunito-1.ttf",
+    "url": "https://fonts.gstatic.com/s/nunito/v32/XRXI3I6Li01BKofiOc5wtlZ2di8HDGUmRTM.ttf",
+    "sha256": "1506fc96971e84d1a4ca89f0d1157a881b9ce217bbfa05d2b3c9e3c8f6723091"
+  },
+  {
+    "file": "infonet/myapp/static/vendor/nunito-2.ttf",
+    "url": "https://fonts.gstatic.com/s/nunito/v32/XRXI3I6Li01BKofiOc5wtlZ2di8HDFwmRTM.ttf",
+    "sha256": "1a025dfce6e6e03bbe31ba82277ec5ed96df8b8dd58b3df6267269490b90b1dc"
+  },
+  {
+    "file": "infonet/myapp/static/vendor/nunito.css",
+    "url": "locally rewritten Google Fonts stylesheet",
+    "sha256": "0ae811c77a381de61155b0c7befecde90e2c95f7b42d5eb4c1220429a7bd2c8c"
+  },
+  {
+    "file": "infonet/myapp/static/vendor/nunito-OFL.txt",
+    "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/nunito/OFL.txt",
+    "sha256": "580df76c95a1ec5ab878ceb25bb3d85c6a076804e9c970c8c6972aea775fdf65"
+  },
+  {
+    "file": "deploy/vendor/DenHub.exe",
+    "url": "https://github.com/winsw/winsw/releases/download/v2.12.0/WinSW-x64.exe",
+    "sha256": "05b82d46ad331cc16bdc00de5c6332c1ef818df8ceefcd49c726553209b3a0da"
+  }
+]

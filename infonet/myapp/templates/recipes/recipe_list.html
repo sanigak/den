@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Recipes - Den{% endblock %}
+
+{% block extra_css %}<link rel="stylesheet" href="{% static 'den/recipes-recipe_list.css' %}">{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1><span class="icon">🍳</span> Recipes</h1>
+    <a href="{% url 'recipe_create' %}" class="btn btn-primary">+ Add Recipe</a>
+</div>
+
+{% if recipes %}
+<div class="row">
+    {% for recipe in recipes %}
+    <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card recipe-card">
+            <div class="card-body">
+                <h3 class="recipe-name">{{ recipe.name }}</h3>
+                <span class="protein-badge protein-{{ recipe.protein_type }}">
+                    {{ recipe.get_protein_type_display }}
+                </span>
+                <div class="ingredients-preview">
+                    {% if recipe.ingredients %}
+                        {{ recipe.ingredients|slice:":5"|join:", " }}{% if recipe.ingredients|length > 5 %}, ...{% endif %}
+                    {% else %}
+                        <em>No ingredients listed</em>
+                    {% endif %}
+                </div>
+                <div class="recipe-actions">
+                    <a href="{% url 'recipe_edit' recipe.id %}" class="btn btn-sm btn-outline-primary">Edit</a>
+                    <form class="recipes-recipe_list-inline-1" method="post" action="{% url 'recipe_delete' recipe.id %}" data-confirm="Delete this recipe? Any planned meals using it will show as blank days.">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-outline-danger w-100">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="card">
+    <div class="empty-state">
+        <div class="icon">📖</div>
+        <h3>No recipes yet</h3>
+        <p>Start building your family's recipe collection!</p>
+        <a href="{% url 'recipe_create' %}" class="btn btn-primary">Add Your First Recipe</a>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

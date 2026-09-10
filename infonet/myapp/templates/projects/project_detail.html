@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static tz %}
+{% block title %}{{ project.name }} - Den{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'den/projects-project_list.css' %}?v=table-1">{% endblock %}
+{% block content %}
+<main class="projects-page project-thread">
+    <a class="project-back" href="{% url 'household_projects' %}{% if project.is_completed %}?status=completed{% endif %}">&larr; All projects</a>
+    {% for message in messages %}<div class="alert alert-success" role="status">{{ message }}</div>{% endfor %}
+    <header class="card project-card">
+        <div class="card-body">
+            <div class="project-tags">
+                <span class="project-tag">{{ project.get_project_type_display }}</span>
+                <span class="project-tag urgency-{{ project.urgency }}">{{ project.get_urgency_display }} urgency</span>
+                {% if project.is_completed %}<span class="project-tag project-completed">Completed</span>{% endif %}
+            </div>
+            <h1>{{ project.name }}</h1>
+            {% if project.description %}<p class="project-description">{{ project.description }}</p>{% endif %}
+            <dl class="project-meta">
+                <div>
+                    <dt>Scheduled start</dt>
+                    <dd>{% if project.scheduled_start %}<time datetime="{{ project.scheduled_start|date:'Y-m-d' }}">{{ project.scheduled_start|date:"M j, Y" }}</time>{% else %}Not scheduled{% endif %}</dd>
+                </div>
+                <div>
+                    <dt>Estimated time</dt>
+                    <dd>{% if project.estimated_days %}{{ project.estimated_days|floatformat:"-1" }} day{% if project.estimated_days != 1 %}s{% endif %}{% else %}Not estimated{% endif %}</dd>
+                </div>
+            </dl>
+            <div class="project-actions">
+                <a href="{% url 'project_edit' project.pk %}" class="btn btn-outline-secondary">Edit project</a>
+                <form method="post" action="{% url 'project_set_completion' project.pk %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="is_completed" value="{% if project.is_completed %}false{% else %}true{% endif %}">
+                    <button type="submit" class="btn btn-secondary">{% if project.is_completed %}Reopen{% else %}Mark complete{% endif %}</button>
+                </form>
+                <form method="post" action="{% url 'project_delete' project.pk %}" data-confirm="Delete this project and its comments? This cannot be undone.">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-danger">Delete project</button>
+                </form>
+            </div>
+        </div>
+    </header>
+    <section id="comments" aria-labelledby="comments-heading">
+        <h2 id="comments-heading">Comments <span class="text-muted">({{ comment_page.paginator.count }})</span></h2>
+        <p class="small text-muted">Updates appear in order. Time zone: {{ display_time_zone }}.</p>
+        {% timezone display_time_zone %}
+        {% for comment in comment_page %}
+        <article class="card project-comment" id="comment-{{ comment.pk }}" aria-labelledby="comment-{{ comment.pk }}-author">
+            <div class="card-body">
+                <header class="comment-meta">
+                    <strong id="comment-{{ comment.pk }}-author">{{ comment.author }}</strong>
+                    <time datetime="{{ comment.created_at|date:'c' }}">{{ comment.created_at|date:'M j, Y · g:i A T' }}</time>
+                </header>
+                <p class="comment-body">{{ comment.body }}</p>
+            </div>
+        </article>
+        {% empty %}<p class="comment-empty">No comments yet. Add the first update below.</p>{% endfor %}
+        {% endtimezone %}
+        {% if comment_page.has_other_pages %}
+        <nav class="comment-pages" aria-label="Comment pages">
+            {% if comment_page.has_previous %}<a href="?page={{ comment_page.previous_page_number }}#comments">Earlier comments</a>{% endif %}
+            <span>Page {{ comment_page.number }} of {{ comment_page.paginator.num_pages }}</span>
+            {% if comment_page.has_next %}<a href="?page={{ comment_page.next_page_number }}#comments">Later comments</a>{% endif %}
+        </nav>
+        {% endif %}
+        <section class="card project-form" aria-label="Write a comment">
+            <div class="card-body">
+                {% if comment_error %}<div class="alert alert-danger" role="alert">{{ comment_error }}</div>{% endif %}
+                <form method="post" action="{% url 'project_add_comment' project.pk %}">
+                    {% csrf_token %}
+                    <label for="{{ comment_form.body.id_for_label }}">{{ comment_form.body.label }}</label>
+                    {{ comment_form.body }}
+                    {{ comment_form.body.errors }}
+                    <p class="small text-muted comment-help" id="comment-help">Up to 4,000 characters. Comments cannot be edited after posting.</p>
+                    {% if comment_identity %}
+                    <p class="comment-attribution">Posting as <strong>{{ comment_identity.author }}</strong></p>
+                    <button type="submit" class="btn btn-primary">Post comment</button>
+                    {% else %}
+                    <p role="status">Connect an approved household device to Tailscale to comment. Newly approved devices may take a minute to appear.</p>
+                    <button type="submit" class="btn btn-primary" disabled>Post comment</button>
+                    {% endif %}
+                </form>
+            </div>
+        </section>
+    </section>
+</main>
+{% endblock %}

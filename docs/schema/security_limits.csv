@@ -1,0 +1,36 @@
+interface,limit,unit,excess_behavior
+HTTP body,262144,bytes,413
+HTTP headers,16384,bytes,Waitress rejects oversized headers
+Form fields,100,fields,400
+File uploads,0,files,400
+Shopping content,500,characters,Form error or bulk operation 400
+Project description,10000,characters,Form error
+Recipe name,200,characters,Form error
+Recipe ingredients,200,nonempty lines,Form error
+Recipe ingredient line,500,characters,Form error
+Recipe ingredient input,32768,UTF-8 bytes,Form error
+Shopping records,2000,rows,400 without partial write
+Project records,2000,rows,400 without partial write
+Recipe records,500,rows,400 without partial write
+Planner dates,1900-01-01 through 2100-12-31,inclusive dates,400 without mutation
+Planner generation and shopping range,365,inclusive days,400 without mutation
+Global POST budget,60,per UTC-aligned minute,429 with Retry-After
+Planner generation and shifts,6,per UTC-aligned minute,429 with Retry-After
+AI attempts,20,per UTC day,429 with Retry-After
+AI concurrency,1,worker,429 with Retry-After
+AI lease recovery,35,seconds,Expired lease can be replaced
+AI parent deadline,30,seconds,Kill worker and return plain download
+AI transport timeout,25,seconds,Plain download
+AI retries,0,retries,Plain download
+AI input and output,32768,UTF-8 bytes,413 input or plain fallback output
+AI output tokens,1024,tokens,Provider token cap
+AI provider response,131072,decoded HTTP bytes,Plain fallback before parsing oversized JSON
+AI provider fallback,0,alternate providers,Plain download if pinned route fails
+Project comment body,4000,characters,400 with preserved draft
+Project comments,200,per project,400 without partial write
+Household comments,10000,total rows,400 without partial write
+Comment thread page,50,comments,Paginate; latest page by default
+Device identity map,65536,bytes,Disable comment posting
+Mapped devices,64,nodes,Reject invalid map
+Device map lifetime,300,seconds,403 for comments until refreshed
+Device map refresh,60,seconds,Protected SYSTEM scheduled task; stale map fails closed

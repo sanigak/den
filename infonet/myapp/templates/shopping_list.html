@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Shopping List - Den{% endblock %}
+
+{% block extra_css %}<link rel="stylesheet" href="{% static 'den/shopping_list.css' %}">{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1><span class="icon">&#128722;</span> Shopping List</h1>
+</div>
+
+<div class="row">
+    <div class="col-lg-4 mb-4">
+        <div class="card add-card">
+            <div class="card-header">
+                Add Item
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        {{ form.content }}
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-8">
+        <div class="card items-card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span>Items</span>
+                {% if items %}
+                <span class="item-count">{{ items|length }} item{{ items|length|pluralize }}</span>
+                {% endif %}
+            </div>
+            <div class="card-body p-0">
+                {% if items %}
+                    {% for item in items %}
+                    <div class="shopping-item" data-item-id="{{ item.id }}">
+                        <span>{{ item.content }}</span>
+                        <button type="button" class="btn btn-outline-danger btn-sm remove-item-btn" data-url="{% url 'shopping_delete' item.id %}">Remove</button>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                <div class="empty-state">
+                    <div class="icon">&#128221;</div>
+                    <p>Your shopping list is empty.<br>Add items above to get started!</p>
+                </div>
+                {% endif %}
+            </div>
+            {% if items %}
+            <div class="list-actions">
+                <a href="{% url 'shopping_download' %}" class="btn btn-outline-secondary">Download</a>
+                <form class="shopping_list-inline-1" method="post" action="{% url 'shopping_clear' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-danger w-100" data-confirm="Clear all items from your shopping list?">Clear List</button>
+                </form>
+                <button type="button" class="btn btn-primary" id="downloadClearBtn"
+                        data-url="{% url 'shopping_download_and_clear' %}">Download &amp; Clear</button>
+            </div>
+            <div class="list-actions-smart">
+                <button type="button" class="btn btn-smart" id="smartExportBtn"
+                        data-url="{% url 'shopping_smart_export' %}">
+                    <span class="btn-smart-label">Smart Export (organized by aisle)</span>
+                </button>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script defer src="{% static 'den/shopping_list.js' %}"></script>
+
+{% endblock %}

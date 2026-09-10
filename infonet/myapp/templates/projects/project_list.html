@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Household Projects - Den{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'den/projects-project_list.css' %}?v=table-1">{% endblock %}
+{% block extra_js %}<script defer src="{% static 'den/projects-project_list.js' %}?v=table-1"></script>{% endblock %}
+
+{% block content %}
+<main class="projects-page">
+    <header class="projects-header">
+        <div>
+            <h1><span aria-hidden="true">&#128736;</span> Household Projects</h1>
+            <p>A place for the little fixes and the bigger plans.</p>
+        </div>
+        {% if editing_project %}
+        <a href="{% url 'household_projects' %}" class="btn btn-outline-secondary">Back to projects</a>
+        {% else %}
+        <button type="button" class="btn btn-primary project-add" data-toggle="modal" data-target="#project-modal" aria-haspopup="dialog" aria-controls="project-modal">+ Add task</button>
+        {% endif %}
+    </header>
+
+    {% for message in messages %}
+    <div class="alert alert-success" role="status">{{ message }}</div>
+    {% endfor %}
+
+    <section aria-labelledby="project-list-heading">
+        <h2 class="sr-only" id="project-list-heading">Your projects</h2>
+        <nav class="project-filters" aria-label="Project status">
+            <a href="{% url 'household_projects' %}"{% if status == 'active' %} aria-current="page"{% endif %}>Active ({{ active_count }})</a>
+            <a href="{% url 'household_projects' %}?status=completed"{% if status == 'completed' %} aria-current="page"{% endif %}>Completed ({{ completed_count }})</a>
+            <a href="{% url 'household_projects' %}?status=all"{% if status == 'all' %} aria-current="page"{% endif %}>All</a>
+        </nav>
+        <p class="small text-muted">Highest urgency first, then earliest scheduled start. Select a project for details.</p>
+        {% if projects %}
+        <div class="project-table-wrap" role="region" aria-label="Projects table" tabindex="0">
+            <table class="project-table">
+                <caption class="sr-only">{% if status == 'active' %}Active{% elif status == 'completed' %}Completed{% else %}All{% endif %} household projects</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">Project</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Urgency</th>
+                        <th scope="col">Scheduled start</th>
+                        <th scope="col">Estimated time</th>
+                        <th scope="col">Comments</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for project in projects %}
+                    <tr class="project-row">
+                        <th scope="row" class="project-name-cell">
+                            <a class="project-name-link" href="{% url 'project_detail' project.pk %}">{{ project.name }}</a>
+                            {% if project.is_completed %}<span class="project-tag project-completed">Completed</span>{% endif %}
+                        </th>
+                        <td>{{ project.get_project_type_display }}</td>
+                        <td><span class="project-tag urgency-{{ project.urgency }}">{{ project.get_urgency_display }}</span></td>
+                        <td>{% if project.scheduled_start %}<time datetime="{{ project.scheduled_start|date:'Y-m-d' }}">{{ project.scheduled_start|date:"M j, Y" }}</time>{% else %}<span class="text-muted">Not scheduled</span>{% endif %}</td>
+                        <td>{% if project.estimated_days %}{{ project.estimated_days|floatformat:"-1" }} day{% if project.estimated_days != 1 %}s{% endif %}{% else %}<span class="text-muted">Not estimated</span>{% endif %}</td>
+                        <td><a class="project-comment-link" href="{% url 'project_detail' project.pk %}#comments" aria-label="Comments for {{ project.name }} ({{ project.comment_count }})">Comments ({{ project.comment_count }})</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="card project-empty">
+            {% if status == 'completed' %}
+            <h3>No completed projects yet</h3>
+            <p>Open a project to mark it complete.</p>
+            {% elif completed_count and status == 'active' %}
+            <h3>All caught up</h3>
+            <p>Use Add task for your next project whenever you're ready.</p>
+            {% else %}
+            <h3>What's on the house list?</h3>
+            <p>Use Add task to add your first task or project.</p>
+            {% endif %}
+        </div>
+        {% endif %}
+    </section>
+
+    <div class="modal project-modal" id="project-modal" tabindex="-1" role="dialog" aria-labelledby="project-modal-title" aria-hidden="true"{% if editing_project or form.errors %} data-auto-open="true"{% endif %}>
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <section class="modal-content project-form">
+                <header class="modal-header">
+                    <h2 class="modal-title" id="project-modal-title">{% if editing_project %}Edit project{% else %}Add task{% endif %}</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </header>
+                <form method="post" action="{% if editing_project %}{% url 'project_edit' editing_project.pk %}{% else %}{% url 'household_projects' %}{% endif %}">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        {% if form.errors %}
+                        <div class="alert alert-danger" role="alert">Please check the highlighted fields below.</div>
+                        {% endif %}
+                        {{ form.non_field_errors }}
+                        <div class="form-row">
+                            {% for field in form %}
+                            <div class="form-group {% if field.name == 'name' or field.name == 'description' %}col-12{% else %}col-sm-6{% endif %}">
+                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                {{ field }}
+                                {% if field.help_text %}<small id="{{ field.auto_id }}_helptext" class="form-text text-muted">{{ field.help_text }}</small>{% endif %}
+                                {{ field.errors }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        {% if editing_project %}
+                        <a href="{% url 'project_detail' editing_project.pk %}" class="btn btn-outline-secondary">Cancel</a>
+                        {% else %}
+                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+                        {% endif %}
+                        <button type="submit" class="btn btn-primary">{% if editing_project %}Save changes{% else %}Add task{% endif %}</button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</main>
+{% endblock %}

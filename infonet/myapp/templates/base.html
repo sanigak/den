@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}Den{% endblock %}</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon-32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon-16.png' %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}">
+
+    <!-- Open Graph / Social -->
+    <meta property="og:title" content="{% block og_title %}Den - Your Household Hub{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Meal planning and grocery shopping made simple for the whole family.{% endblock %}">
+    <meta property="og:image" content="{% static 'images/og-image.png' %}">
+    <meta property="og:type" content="website">
+
+    <!-- Fonts -->
+    
+    
+    
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap.min.css' %}">
+
+    
+<link rel="stylesheet" href="{% static 'den/base.css' %}">
+<link rel="stylesheet" href="{% static 'vendor/nunito.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'index' %}">
+                <img src="{% static 'images/mascot-pixel-face.png' %}" alt="Den mascot">
+                Den
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'index' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'meal_calendar' %}">Planner</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'shopping_list' %}">Shopping</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'recipe_list' %}">Recipes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'household_projects' %}"{% if request.resolver_match.url_name == 'household_projects' or request.resolver_match.url_name == 'project_edit' %} aria-current="page"{% endif %}>Projects</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>Den - Your household hub</p>
+        </div>
+    </footer>
+
+    
+    
+    
+    
+    <script defer src="{% static 'den/ui.js' %}"></script>
+<script defer src="{% static 'den/base.js' %}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ title }} - Den{% endblock %}
+
+{% block extra_css %}<link rel="stylesheet" href="{% static 'den/recipes-recipe_form.css' %}">{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1><span class="icon">{% if recipe %}✏️{% else %}➕{% endif %}</span> {{ title }}</h1>
+</div>
+
+<div class="card form-card">
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="id_name">{{ form.name.label }}</label>
+                {{ form.name }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_protein_type">{{ form.protein_type.label }}</label>
+                {{ form.protein_type }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_frequency">{{ form.frequency.label }}</label>
+                {{ form.frequency }}
+                <small>Favorites get dealt more often &mdash; a &ldquo;3x&rdquo; recipe appears three times per rotation cycle</small>
+            </div>
+
+            <div class="form-group">
+                <label for="id_ingredients_text">{{ form.ingredients_text.label }}</label>
+                {{ form.ingredients_text }}
+                <small>Enter one ingredient per line</small>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Save Recipe</button>
+                <a href="{% url 'recipe_list' %}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

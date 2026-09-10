@@ -1,0 +1,16 @@
+model,field,type,required,default,constraints,description
+HouseholdProject,id,BigAutoField,automatic,generated,primary key,Stable project identifier
+HouseholdProject,name,CharField,yes,,max_length=200,Project or task name
+HouseholdProject,description,TextField,no,empty string,max_length=10000,Freeform description
+HouseholdProject,project_type,CharField,yes,other,maintenance|repair|cleaning|organization|app_tech_idea|ama|other,Project category
+HouseholdProject,urgency,PositiveSmallIntegerField,yes,2,1=Low|2=Normal|3=High|4=Urgent,Higher values sort first
+HouseholdProject,scheduled_start,DateField,no,NULL,valid date; ISO YYYY-MM-DD form value,Planned start date without time
+HouseholdProject,estimated_days,DecimalField,no,NULL,max_digits=5; decimal_places=1; 0.1 to 9999.9,Manual duration estimate in days
+HouseholdProject,is_completed,BooleanField,automatic,false,true|false,Set by completion endpoint; excluded from entry form
+HouseholdProject,created_at,DateTimeField,automatic,current timestamp,auto_now_add; immutable through form,Creation time for stable ordering
+ProjectComment,id,BigAutoField,automatic,generated,primary key,Stable comment identifier
+ProjectComment,project,ForeignKey,yes,,CASCADE delete; related_name=comments,Owning household project
+ProjectComment,body,TextField,yes,,1 to 4000 characters after outer whitespace stripping; escaped plain text,Comment content with preserved newlines
+ProjectComment,author,CharField,automatic,device owner,max_length=64; non-empty database constraint; protected mapping; excluded from form,Immutable household author snapshot
+ProjectComment,device_id,CharField,automatic,protected device map,max_length=64; excluded from form,Enrolled Tailscale node ID at posting
+ProjectComment,created_at,DateTimeField,automatic,current timestamp,auto_now_add; UTC storage; DEN_DISPLAY_TIME_ZONE display,Immutable posting timestamp

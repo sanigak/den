@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Den - Home{% endblock %}
+
+{% block extra_css %}<link rel="stylesheet" href="{% static 'den/index.css' %}">{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <img src="{% static 'images/mascot-pixel-full.png' %}" alt="Den cat mascot" class="hero-mascot">
+    <h1>Welcome to Den</h1>
+    <p class="lead">Your cozy household hub</p>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card feature-card">
+            <span class="feature-icon">📅</span>
+            <h3>Meal Planner</h3>
+            <p>Plan your week's dinners automatically.<br>No more repeated meals or last-minute decisions.</p>
+            <a href="{% url 'meal_calendar' %}" class="btn btn-primary">View Calendar</a>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <div class="card feature-card">
+            <span class="feature-icon" aria-hidden="true">&#128736;</span>
+            <h3>Household Projects</h3>
+            <p>Keep chores, repairs, and bigger projects in one place.<br>Decide what needs doing next.</p>
+            <a href="{% url 'household_projects' %}" class="btn btn-primary">View Projects</a>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <div class="card feature-card">
+            <span class="feature-icon">🛒</span>
+            <h3>Shopping List</h3>
+            <p>Keep track of everything you need to pick up.<br>Never forget an ingredient again.</p>
+            <a href="{% url 'shopping_list' %}" class="btn btn-primary">Open List</a>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <div class="card feature-card">
+            <span class="feature-icon">🍳</span>
+            <h3>Recipes</h3>
+            <p>Your family's favorite meals, all in one place.<br>Easy to find, easy to plan.</p>
+            <a href="{% url 'recipe_list' %}" class="btn btn-primary">Browse Recipes</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

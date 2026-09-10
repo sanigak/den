@@ -1,0 +1,9 @@
+document,field,type,constraints,description
+owners.json,login to author,object,Protected administrative file; 1 to 64 lowercase login keys with printable trimmed names,Known Tailscale logins mapped to household names
+devices.json,version,integer,1,Registry format version
+devices.json,generated_at,number,UTC epoch seconds; expires after 300 seconds,Successful protected refresh time
+devices.json,devices,array,At most 64 entries; entire file at most 65536 bytes,Current enrolled household nodes
+devices.json,devices.id,string,Unique; 1 to 64 ASCII letters digits underscore or hyphen,Stable enrolled Tailscale node ID
+devices.json,devices.addresses,array,1 or 2 unique canonical Tailscale IP addresses,IPv4 and IPv6 source lookup
+devices.json,devices.login,string,Known lowercase owner login; must match Serve header,Owner identity cross-check
+devices.json,devices.author,string,1 to 64 printable trimmed characters,Display name stamped onto comments

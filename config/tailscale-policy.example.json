@@ -1,0 +1,10 @@
+{
+  "groups": {"group:household": ["alex@example.com", "sam@example.com"]},
+  "hosts": {"den": "100.64.0.10", "den-v6": "fd7a:115c:a1e0::10"},
+  "grants": [{"src": ["group:household"], "dst": ["den", "den-v6"], "ip": ["tcp:443"]}],
+  "ssh": [],
+  "tests": [
+    {"src": "alex@example.com", "proto": "tcp", "accept": ["den:443", "den-v6:443"], "deny": ["den:22", "den:3389", "den:8082"]},
+    {"src": "sam@example.com", "proto": "tcp", "accept": ["den:443"], "deny": ["den:22", "den:8082"]}
+  ]
+}

@@ -1,0 +1,218 @@
+:root {
+    --den-primary: #D4856A;
+    --den-primary-dark: #B86E55;
+    --den-secondary: #8BA888;
+    --den-accent: #E9C46A;
+    --den-warm-gray: #6B5B5B;
+    --den-text: #4A4040;
+    --den-text-light: #7A6B6B;
+    --den-bg: #FFFAF7;
+    --den-card: #FFFFFF;
+    --den-border: #F0E6E0;
+}
+
+body {
+    font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--den-bg);
+    color: var(--den-text);
+    padding-top: 70px;
+    padding-bottom: 80px;
+    min-height: 100vh;
+}
+
+/* Navbar */
+.navbar {
+    background-color: var(--den-card) !important;
+    box-shadow: 0 2px 10px rgba(74, 64, 64, 0.08);
+    padding: 0.75rem 1rem;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--den-primary) !important;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.navbar-brand img {
+    height: 36px;
+    width: auto;
+}
+
+.navbar-nav .nav-link {
+    color: var(--den-text) !important;
+    font-weight: 600;
+    padding: 0.5rem 1rem !important;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.navbar-nav .nav-link:hover {
+    color: var(--den-primary) !important;
+    background-color: rgba(212, 133, 106, 0.1);
+}
+
+.navbar-toggler {
+    border-color: var(--den-border);
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(74, 64, 64, 0.8)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* Main container */
+.container {
+    margin-top: 2rem;
+}
+
+/* Cards */
+.card {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(74, 64, 64, 0.06);
+    background-color: var(--den-card);
+    overflow: hidden;
+}
+
+.card-header {
+    background-color: var(--den-primary);
+    color: white;
+    border-bottom: none;
+    font-weight: 600;
+    padding: 1rem 1.25rem;
+}
+
+.card-header.bg-secondary {
+    background-color: var(--den-warm-gray) !important;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--den-primary);
+    border-color: var(--den-primary);
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 0.5rem 1.25rem;
+    transition: all 0.2s ease;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+    background-color: var(--den-primary-dark);
+    border-color: var(--den-primary-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(212, 133, 106, 0.3);
+}
+
+.btn-secondary {
+    background-color: var(--den-warm-gray);
+    border-color: var(--den-warm-gray);
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.btn-outline-danger {
+    color: #C75D5D;
+    border-color: #C75D5D;
+    border-radius: 8px;
+}
+
+.btn-outline-danger:hover {
+    background-color: #C75D5D;
+    border-color: #C75D5D;
+}
+
+/* Forms */
+.form-control {
+    border-radius: 10px;
+    border: 2px solid var(--den-border);
+    padding: 0.625rem 1rem;
+    font-size: 1rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-control:focus {
+    border-color: var(--den-primary);
+    box-shadow: 0 0 0 3px rgba(212, 133, 106, 0.15);
+}
+
+.form-control::placeholder {
+    color: var(--den-text-light);
+}
+
+/* Lists */
+.list-group-item {
+    border-color: var(--den-border);
+    padding: 1rem 1.25rem;
+}
+
+.list-group-flush .list-group-item:first-child {
+    border-top: none;
+}
+
+/* Badges */
+.badge-light {
+    background-color: var(--den-bg);
+    color: var(--den-text);
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--den-text);
+    font-weight: 700;
+}
+
+.text-muted {
+    color: var(--den-text-light) !important;
+}
+
+.lead {
+    color: var(--den-text-light);
+}
+
+/* Footer */
+footer {
+    background-color: var(--den-card);
+    color: var(--den-text-light);
+    padding: 1.25rem 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    border-top: 1px solid var(--den-border);
+    font-size: 0.9rem;
+}
+
+footer p {
+    margin: 0;
+}
+
+/* Utility classes */
+.bg-den-primary { background-color: var(--den-primary) !important; }
+.bg-den-secondary { background-color: var(--den-secondary) !important; }
+.text-den-primary { color: var(--den-primary) !important; }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    body {
+        padding-top: 60px;
+    }
+
+    .navbar-brand {
+        font-size: 1.25rem;
+    }
+
+    .navbar-brand img {
+        height: 28px;
+    }
+}
+
+
+
+.den-modal-open { display: block; background: rgba(0,0,0,.5); }
+[hidden] { display: none !important; }

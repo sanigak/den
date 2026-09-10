@@ -1,0 +1,59 @@
+.hero {
+    text-align: center;
+    padding: 2rem 0 3rem;
+}
+
+.hero-mascot {
+    width: 120px;
+    height: auto;
+    margin-bottom: 1.5rem;
+    animation: gentle-bounce 3s ease-in-out infinite;
+}
+
+@keyframes gentle-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.hero .lead {
+    font-size: 1.25rem;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.feature-card {
+    padding: 2rem 1.5rem;
+    text-align: center;
+    height: 100%;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(74, 64, 64, 0.1);
+}
+
+.feature-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.feature-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.feature-card p {
+    margin-bottom: 1.5rem;
+    color: var(--den-text-light);
+}
+
+.feature-card .btn {
+    min-width: 120px;
+}
