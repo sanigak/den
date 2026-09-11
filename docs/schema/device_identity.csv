@@ -1,5 +1,8 @@
 document,field,type,constraints,description
 owners.json,login to author,object,Protected administrative file; 1 to 64 lowercase login keys with printable trimmed names,Known Tailscale logins mapped to household names
+device-owners.json,node ID to assignment,object,Optional protected administrative file; at most 64 valid stable node IDs,Per-device author assignments override account defaults without granting admission
+device-owners.json,assignment.login,string,Expected lowercase login; must match recognized enrolled owner,Mismatch excludes node from the generated registry
+device-owners.json,assignment.author,string,1 to 64 printable trimmed characters,Future comment name for only this node
 devices.json,version,integer,1,Registry format version
 devices.json,generated_at,number,UTC epoch seconds; expires after 300 seconds,Successful protected refresh time
 devices.json,devices,array,At most 64 entries; entire file at most 65536 bytes,Current enrolled household nodes

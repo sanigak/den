@@ -38,6 +38,7 @@ staticfiles/
 secrets.json
 owners.json
 devices.json
+device-owners.json
 den-runtime.json
 private/
 local/

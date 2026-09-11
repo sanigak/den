@@ -123,8 +123,10 @@ The optional LAN worker admits its configured home subnet for ordinary household
 features, but always returns no comment identity, even for supplied HTTPS or
 Tailscale headers. Existing comments remain readable through either address.
 
-The label describes the device's enrolled owner, not whoever physically holds
-it. Historical authors remain unchanged after device removal, display-name changes, or reassignment.
+The label uses the account default or an administrator's stable-node assignment,
+not whoever physically holds the device. A node assignment still requires the
+expected enrolled login. Historical authors remain unchanged after device removal,
+display-name changes, or reassignment.
 Local Windows processes could forge proxy headers by contacting loopback; this
 retains the existing Windows/Tailscale host trust boundary. Identity cannot bypass
 the global resource limits or grant additional computer permissions.

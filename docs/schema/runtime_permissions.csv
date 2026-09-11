@@ -14,6 +14,7 @@ Owner private profile and AppData,owner and administrative permissions,no access
 Tailscale protected credentials,SYSTEM and administrative permissions,no access,Actual service file-handle probe denied
 identity directory and device map,full control,read only,Denied write and delete; permitted map read
 identity owner mapping,full control,read only,Denied owner mapping writes
+identity device owner assignments,full control,read only,Administrative stable-node overrides; preserved on upgrade; generated map consumed by Den
 DenHub Device Map task,SYSTEM execution,no control granted,Fixed protected script; reads status and writes bounded map
 LAN worker,configured through protected service XML,same DenHub service identity,Separate Django process; shared live database; no additional filesystem grants
 DenHub-LAN firewall rule,administrative changes only,no control granted,Exact local address and TCP port and interface and remote home subnet

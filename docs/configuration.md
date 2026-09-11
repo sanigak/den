@@ -49,6 +49,28 @@ examples, environment changes, or a new input file. Change that protected file
 deliberately as an administrator when household membership changes, then run
 `deploy/den.ps1 SyncDevices`. Historical comments keep their saved author names.
 
+### Device-specific names
+
+Devices sharing one Tailscale login can have different comment names. Optional
+`C:\ProgramData\DenHub\identity\device-owners.json` maps stable enrolled node IDs
+to an expected `login` and an `author`. Use `config/device-owners.example.json`
+as a format reference; its node ID is synthetic. Configure the real file as an
+administrator, then run `SyncDevices`. Never edit generated `devices.json` directly.
+
+Assignments override only the selected node's display name. The node must still
+have a recognized household login, remain enrolled, and have no tags. Its actual
+login must match the assignment's expected login; a mismatch excludes that node
+until an administrator corrects the assignment. Other nodes retain their account
+defaults. Renaming a device or changing its IP does not change its stable-ID
+assignment; re-enrollment under a new node ID requires a new assignment.
+
+The file may be absent or contain an empty object. At most 64 assignments are
+accepted, with the same login/name validation used for household owners. Invalid
+assignments fail the map refresh; the previous map then expires normally. The
+application cannot write this protected file, and upgrades preserve it. Historical
+comment authors remain unchanged. Validate a proposed file with
+`python deploy/sync_devices.py --validate-device-owners <private-file>`.
+
 ## Environment variables
 
 See `schema/security_config.csv` for the full contract.

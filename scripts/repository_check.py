@@ -11,7 +11,7 @@ from urllib.parse import urlsplit
 ROOT = Path(__file__).resolve().parents[1]
 BLOCKED_PARTS = {'.hardening', 'backups', 'openclaw-backup', 'infonetenv', '.venv', 'venv',
                  '__pycache__', 'staticfiles', 'node_modules', '.local', 'private', 'local-data'}
-BLOCKED_NAMES = {'secrets.json', 'owners.json', 'devices.json', 'den-runtime.json',
+BLOCKED_NAMES = {'secrets.json', 'owners.json', 'devices.json', 'device-owners.json', 'den-runtime.json',
                  'household-owners.json', 'tailscale-policy.json', 'live-url.txt', '.env', 'local.ps1'}
 SECRET = re.compile(r'sk-(?:ant|or)-[A-Za-z0-9_-]{30,}|gh[pousr]_[A-Za-z0-9]{30,}|'
                     r'github_pat_[A-Za-z0-9_]{50,}|-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----')

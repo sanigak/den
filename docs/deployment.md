@@ -204,6 +204,12 @@ Upgrades preserve it. Update that protected mapping as an administrator, then ru
 and approved-device matching still gate attribution. Historical author snapshots
 remain unchanged.
 
+Optional protected `identity/device-owners.json` assigns a display name to one
+stable node ID while retaining an expected login check. Its format is described
+in `configuration.md`. The SYSTEM refresh reads it on every run; a missing file
+uses account defaults. Upgrades replace the synchronizer but preserve this file.
+Configuration changes need a device-map refresh, not a Den restart or migration.
+
 ## Recovery
 
 The SYSTEM backup task runs daily at 03:00 local time, including missed starts.
