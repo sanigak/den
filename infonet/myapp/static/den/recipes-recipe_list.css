@@ -64,12 +64,16 @@
 
 .recipe-actions {
     display: flex;
+    flex-wrap: wrap;
     gap: 0.5rem;
 }
 
 .recipe-actions .btn {
     flex: 1;
 }
+
+.recipe-name, .ingredients-preview { overflow-wrap: anywhere; }
+.recipe-actions > * { min-width: 0; }
 
 .btn-outline-primary {
     color: var(--den-primary);

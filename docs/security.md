@@ -135,7 +135,9 @@ as HTML. Provider errors yield the plain list, preserving stored items.
 Application JavaScript and CSS are local. The former jQuery/Bootstrap JavaScript
 dependencies are replaced by small local handlers for navigation and modals.
 Modal controls support Escape, focus trapping, focus restoration, and background
-inertness. Confirmation handlers use fixed data attributes. Form/model text is
+inertness. `DenModal.open(element, trigger = document.activeElement)` accepts the
+opening control explicitly for browsers that do not focus clicked buttons.
+Confirmation handlers use fixed data attributes. Form/model text is
 automatically escaped and is never interpolated into scripts.
 
 The enforced CSP allows only local script/style/font/network sources, local/data

@@ -6,7 +6,7 @@
 {% block extra_js %}<script defer src="{% static 'den/projects-project_list.js' %}?v=table-1"></script>{% endblock %}
 
 {% block content %}
-<main class="projects-page">
+<div class="projects-page">
     <header class="projects-header">
         <div>
             <h1><span aria-hidden="true">&#128736;</span> Household Projects</h1>
@@ -32,7 +32,8 @@
         </nav>
         <p class="small text-muted">Highest urgency first, then earliest scheduled start. Select a project for details.</p>
         {% if projects %}
-        <div class="project-table-wrap" role="region" aria-label="Projects table" tabindex="0">
+        <p class="project-scroll-hint small text-muted" id="project-scroll-hint">Scroll across the table to see every column.</p>
+        <div class="project-table-wrap" role="region" aria-label="Projects table" aria-describedby="project-scroll-hint" tabindex="0">
             <table class="project-table">
                 <caption class="sr-only">{% if status == 'active' %}Active{% elif status == 'completed' %}Completed{% else %}All{% endif %} household projects</caption>
                 <thead>
@@ -115,5 +116,5 @@
             </section>
         </div>
     </div>
-</main>
+</div>
 {% endblock %}

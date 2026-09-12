@@ -36,6 +36,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 0.75rem;
     padding: 1rem 1.25rem;
     border-bottom: 1px solid var(--den-border);
     transition: background-color 0.15s ease;
@@ -51,7 +52,11 @@
 
 .shopping-item span {
     font-size: 1.05rem;
+    min-width: 0;
+    overflow-wrap: anywhere;
 }
+
+.shopping-item .btn { flex-shrink: 0; }
 
 .empty-state {
     padding: 3rem 1.5rem;
@@ -82,6 +87,7 @@
     padding: 1rem 1.25rem;
     background: var(--den-bg);
     border-top: 1px solid var(--den-border);
+    flex-wrap: wrap;
 }
 
 .list-actions .btn {
@@ -142,5 +148,9 @@
     .list-actions {
         flex-direction: column;
     }
+
+    .add-card .input-group { flex-wrap: wrap; }
+    .add-card .input-group .form-control { flex: 1 1 10rem; width: 100%; }
+    .list-actions > * { flex-basis: auto; }
 }
 .shopping_list-inline-1 {flex: 1; margin: 0;}

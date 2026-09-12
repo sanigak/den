@@ -35,6 +35,22 @@ and mobile overflow. The installed table/modal also passed live read-only checks
 These are recorded results for that release, not a guarantee for every future
 change, browser, operating system, or household device. Recheck affected workflows.
 
+The September 2026 responsive review exercised 11 pages at 10 viewport sizes
+(320–1920 CSS pixels) in Chromium, Firefox, and WebKit: 330 page/viewport checks.
+The final checks found no page overflow or clipped action regions. They included
+all seven weekday headers, long synthetic content, narrow/short modal scrolling,
+past/future meal details, restored focus, mobile navigation, and table scrolling.
+Chromium and WebKit also passed saving meals, cancelling/confirming skips,
+Enter/Space activation, 21 enlarged-text layouts each, the empty planner, and a
+six-week month. WebKit-specific native-select overflow and click-focus behavior
+were corrected during this review. See `responsive_layout.md` for the procedure.
+
+The source changes passed 84 application tests, system/migration checks, the
+72-file deployment source audit, all eight vendor hashes, and the repository
+candidate audit. Tests used isolated synthetic databases. These results do not
+establish physical-device acceptance or deployment to the installed household
+service; screenshots and detailed runtime receipts remain in ignored local storage.
+
 ## Migration compatibility
 
 Migration 0010 must preserve original author/body/device/timestamp values when

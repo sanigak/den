@@ -30,7 +30,9 @@ The projects home screen shows only the project list, with Active selected by
 default. Completed and All remain explicit filters. A full-width table shows
 name, type, urgency, scheduled start, estimated time, and comment count. Project
 names and row clicks open the detail page; comment links open its comments.
-On narrow screens the table scrolls horizontally within its own region.
+On narrow screens the table scrolls horizontally within its own region, with
+a hint explaining how to reach every column. Shared layout and modal behavior
+are documented in `responsive_layout.md`.
 
 The upper-right Add task button opens the entry form in the existing Den modal.
 The form is hidden on a normal list visit. Cancel, Close, Escape, or the backdrop

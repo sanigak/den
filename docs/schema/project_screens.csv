@@ -2,7 +2,7 @@ screen,input,default,behavior
 project_list,status,active,active|completed|all; invalid values fall back to active
 project_list,columns,name|type|urgency|scheduled_start|estimated_days|comment_count,Summary only; descriptions and write actions appear on details
 project_list,row activation,project detail,Name link supports keyboard navigation; unmodified row click opens details; comment link opens thread
-project_list,narrow viewport,scroll within table,Horizontal overflow stays inside a keyboard-focusable labeled region
+project_list,narrow viewport,scroll within table,Horizontal overflow stays inside a keyboard-focusable labeled region; narrow screens show a scrolling hint
 project_create,form visibility,closed,Add task opens modal; cancel or close or Escape or backdrop dismisses it
 project_create,invalid POST,open,Keep submitted values and field errors; focus first invalid field
 project_edit,GET or invalid POST,open,Populate existing values or invalid draft; editing preserves completion state

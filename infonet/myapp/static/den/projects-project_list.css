@@ -5,6 +5,7 @@
 .project-add { flex-shrink: 0; min-height: 44px; background: #a45b43; border-color: #a45b43; }
 .project-add:hover { background: #8d4e39; border-color: #8d4e39; }
 .project-table-wrap { overflow-x: auto; border: 1px solid var(--den-border); border-radius: 12px; background: white; }
+.project-scroll-hint { display: none; }
 .project-table { width: 100%; min-width: 780px; border-collapse: collapse; font-size: .9rem; }
 .project-table th, .project-table td { padding: 1rem; vertical-align: middle; text-align: left; border-bottom: 1px solid var(--den-border); }
 .project-table thead { background: #f6efeb; color: #62534c; }
@@ -82,4 +83,8 @@
     .project-add { margin-left: auto; }
     .project-table th, .project-table td { padding: .75rem; }
     .project-card .card-body { padding: 1.25rem; }
+}
+
+@media (max-width: 991.98px) {
+    .project-scroll-hint { display: block; }
 }

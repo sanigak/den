@@ -3,7 +3,7 @@
 {% block title %}{{ project.name }} - Den{% endblock %}
 {% block extra_css %}<link rel="stylesheet" href="{% static 'den/projects-project_list.css' %}?v=table-1">{% endblock %}
 {% block content %}
-<main class="projects-page project-thread">
+<div class="projects-page project-thread">
     <a class="project-back" href="{% url 'household_projects' %}{% if project.is_completed %}?status=completed{% endif %}">&larr; All projects</a>
     {% for message in messages %}<div class="alert alert-success" role="status">{{ message }}</div>{% endfor %}
     <header class="card project-card">
@@ -82,5 +82,5 @@
             </div>
         </section>
     </section>
-</main>
+</div>
 {% endblock %}

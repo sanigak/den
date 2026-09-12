@@ -17,6 +17,7 @@ This file records the project's supplied documentation conventions.
 | --- | --- |
 | `configuration.md` | Environment variables, private files, local setup, sample data |
 | `household_projects.md` | Projects, forms, comments, attribution, migrations |
+| `responsive_layout.md` | Device layouts, calendar day controls, browser verification |
 | `security.md` | Access boundary, limits, secrets, browser and AI behavior |
 | `deployment.md` | Windows installation, upgrades, backup, restore, Tailscale |
 | `hardening-verification.md` | Verification scope and limits |

@@ -1,0 +1,16 @@
+screen,condition,behavior
+shared,all widths,Device-width viewport with zoom enabled; long text wraps; no page-wide horizontal clipping
+navigation,below 992px,Expandable menu scrolls within viewport height and remains in document layout
+footer,all widths,Follows content and never overlays actions; safe-area bottom padding
+forms,touch or below 992px,Controls retain 1rem text; buttons have 44px minimum height; action rows wrap
+modals,narrow or short viewport,Vertical scrolling and wrapped actions preserve reachable close and submit controls
+modals,close,Restore focus to explicitly supplied opening control; automatic opens default to active element
+calendar,all widths,Seven equal shrinkable columns; clipped names have full text in day modal
+calendar,date activation,Native button opens full meal details with touch or keyboard
+calendar,past date,Read-only meal details; recipe picker and save disabled; skip hidden
+calendar,today or future date,Recipe picker and save plus confirmed skip use existing POST endpoints
+calendar,touch or no hover or below 992px,Small cell shortcuts hidden; day button opens full-size modal actions
+calendar,below 401px,Month heading uses its own row above previous and next navigation
+home,below 576px,Two-column cards with complete wrapping descriptions and 44px minimum button height
+shopping,long text,Content wraps without displacing Remove control
+projects,narrow viewport,Table scrolls within labeled focusable region with visible scroll hint

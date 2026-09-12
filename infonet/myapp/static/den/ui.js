@@ -19,10 +19,10 @@ const DenModal = (() => {
         document.body.classList.remove('modal-open');
         if (previous && previous.isConnected) previous.focus();
     }
-    function open(element) {
+    function open(element, trigger = document.activeElement) {
         if (!element || !element.classList.contains('modal')) return;
         if (active) close();
-        previous = document.activeElement;
+        previous = trigger;
         active = element;
         active.classList.add('show', 'den-modal-open');
         active.setAttribute('aria-hidden', 'false');
@@ -50,7 +50,7 @@ const DenModal = (() => {
         const trigger = event.target.closest('[data-toggle]');
         if (trigger) {
             const target = document.getElementById((trigger.dataset.target || '').replace(/^#/, ''));
-            if (trigger.dataset.toggle === 'modal') open(target);
+            if (trigger.dataset.toggle === 'modal') open(target, trigger);
             if (trigger.dataset.toggle === 'collapse' && target) {
                 const expanded = target.classList.toggle('show');
                 trigger.setAttribute('aria-expanded', String(expanded));
